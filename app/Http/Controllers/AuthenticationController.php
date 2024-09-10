@@ -10,6 +10,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class AuthenticationController extends Controller
+
+
 {
     public function login()
     {
@@ -24,15 +26,18 @@ class AuthenticationController extends Controller
 
     public function actionlogin(Request $request)
     {
-        $credentials = $request->validate([
+        $request->validate([
             'username' => ['required'],
             'password' => ['required'],
         ]);
- 
+
+        $credentials = $request->only('username', 'password');
+
+        // dd($credentials);
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
- 
-            return redirect()->intended('/dashboard');
+
+            return redirect('/dashboard');
         }
 
         return back()->with('loginError', 'Login Failed!');

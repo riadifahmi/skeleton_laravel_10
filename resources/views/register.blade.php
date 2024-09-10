@@ -1,5 +1,12 @@
 @include('template/header')
 
+@if (session()->has('loginError'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{session()->get('registerError')}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+@endif
 
 <body class="position-absolute top-50 start-50 translate-middle">
     <div class="container"></div>

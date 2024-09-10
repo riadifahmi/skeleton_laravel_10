@@ -8,6 +8,14 @@
     </div>
 @endif
 
+@if (session()->has('registerSuccess'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{session()->get('registerSuccess')}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+@endif
+
 <body class="position-absolute top-50 start-50 translate-middle">
     <div class="container"></div>
         <div class="row justify-content-center">
@@ -18,11 +26,11 @@
 
                     <div class="card-body">
 
-                        <form action="{{url('login')}}" method="post">
-                            {{csrf_field()}}
+                        <form action="{{route('actionlogin')}}" method="post" enctype="multipart/form-data">
+                        @csrf
                             <div class="form-group">
                                 <label for="username">Username</label>
-                                <input type="text" class="form-control mt-2" name="username" placeholder="Username">
+                                <input type="text" class="form-control mt-2" name="username" placeholder="Username" required>
                             </div>
                             <div class="form-group">
                                 <label for="password" class="mt-3">Password</label>

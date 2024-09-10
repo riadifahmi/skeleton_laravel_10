@@ -24,25 +24,20 @@ class RegisterController extends Controller
 
     public function actionregister(Request $request)
     {
-        $data = [
-            'username' => $request->username,
-            'password' => $request->password,
-        ];
 
-        $credentials = $request->validate([
+        $validatedData = $request->validate([
             'username' => ['required', 'unique:users', 'max:255', 'min:3'],
             'password' => ['required', 'min:3', 'max:255'],
         ]);
 
-        $user = User::create([
-            'username' => $data['username'],
-            'password' => Hash::make($data['password']),
-        ]);
+        $validatedData['password'] = Hash::make($validatedData['password']);
 
-        if ($user) {
-            return redirect()->intended('/login')->with('success', 'Registration successful!');
+        User::insert($validatedData);
+
+        if ($validatedData) {
+            return redirect()->intended('/login-mahasiswa')->with('registerSuccess', 'Registration successful!');
+        } else {
+            return redirect()->with('registerError', 'Registrasi failed!');
         }
-
-        return back()->with('registrationError', 'Registration failed!');
     }
 }
