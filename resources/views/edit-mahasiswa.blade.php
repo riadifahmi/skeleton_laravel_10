@@ -5,7 +5,7 @@
     <div class="container mt-5">
         <h1 class="text-center my-4">Form Data Mahasiswa</h1>
 
-            <form action="{{url('update',$nrp)}}" method="POST">
+            <form action="{{route('update',$nrp)}}" method="POST">
                 @csrf
 
                 <div class="form-group">

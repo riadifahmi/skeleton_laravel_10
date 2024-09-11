@@ -23,4 +23,4 @@ Route::post('/add', [DashboardController::class, 'createproses'])->name('createp
 Route::get('/edit-mahasiswa/{nrp}', [DashboardController::class, 'edit']);
 Route::post('/update/{nrp}', [DashboardController::class, 'editproses'])->name('update');
 
-Route::get('/hapus-mahasiswa/{nrp}', [DashboardController::class, 'hapusproses'])->name('hapus-mahasiswa');
+Route::get('/hapus-mahasiswa/{nrp}', [DashboardController::class, 'hapusproses'])->name('');

@@ -30,14 +30,37 @@ class RegisterController extends Controller
             'password' => ['required', 'min:3', 'max:255'],
         ]);
 
-        $validatedData['password'] = Hash::make($validatedData['password']);
+        // Hash password
+        $hashedPassword = Hash::make($validatedData['password']);
 
-        User::insert($validatedData);
+        $user = new User();
+        $isInserted = $user->get_create_user($validatedData['username'], $hashedPassword);
 
-        if ($validatedData) {
+        if ($isInserted) {
             return redirect()->intended('/login-mahasiswa')->with('registerSuccess', 'Registration successful!');
         } else {
-            return redirect()->with('registerError', 'Registrasi failed!');
+            return redirect()->with('registerError', 'Registration failed!');
         }
     }
+
+    // public function actionregister(Request $request)
+    // {
+
+    // $validatedData = $request->validate([
+    //     'username' => ['required', 'unique:users', 'max:255', 'min:3'],
+    //     'password' => ['required', 'min:3', 'max:255'],
+    // ]);
+
+    // $md5HashedPassword = md5($validatedData['password']);               // Step 1: MD5 Hash
+    // $finalHashedPassword = hash('sha256', $md5HashedPassword);          // Step 2: SHA-256 Hash
+
+    // $user = new User();
+    // $isInserted = $user->get_create_user($validatedData['username'], $finalHashedPassword);
+
+    // if ($isInserted) {
+    //     return redirect()->intended('/login-mahasiswa')->with('registerSuccess', 'Registration successful!');
+    // } else {
+    //     return redirect()->with('registerError', 'Registration failed!');
+    // }
+    // }
 }

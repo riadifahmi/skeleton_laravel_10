@@ -15,20 +15,20 @@ class DashboardController extends Controller
         $data['title'] = 'Data Mahasiswa';
 
         if ($request->ajax()) {
-            $mahasiswa = Mahasiswa::select('nrp', 'nama', 'email');
-
-            return DataTables::of($mahasiswa)
-                ->addIndexColumn() // Menambahkan nomor index ke setiap baris
+            $mahasiswa = new Mahasiswa();
+            $mhs = collect($mahasiswa->get_all_mahasiswa());
+    
+            return DataTables::of($mhs)
+                ->addIndexColumn() 
                 ->addColumn('action', function($row){
                     $btn = '<a href="' . url('edit-mahasiswa', $row->nrp) . '" class="edit btn btn-primary btn-sm">Edit</a>';
                     $btn .= ' <a href="' . url('hapus-mahasiswa', $row->nrp) . '" class="delete btn btn-danger btn-sm">Delete</a>';
                     return $btn;
                 })
-                ->rawColumns(['action']) // Supaya HTML di kolom 'action' bisa dirender
-                ->make(true); // Mengubah menjadi format JSON yang dibutuhkan oleh DataTables
+                ->rawColumns(['action'])
+                ->make(true);
         }
 
-        // Return view biasa jika bukan request AJAX
         return
             view('template/header', $data) .
             view('dashboard', $data) .
@@ -45,14 +45,15 @@ class DashboardController extends Controller
     }
 
     public function createproses (Request $request) {
-        $data = [
-            'nrp' => $request->nrp,
-            'nama' => $request->nama,
-            'email'=> $request->email
-        ];
+
+        $nrp = $request->nrp;
+        $nama = $request->nama;
+        $email = $request->email;
 
         try {
-            Mahasiswa::insert($data);
+            $mahasiswa = new Mahasiswa();
+            $mahasiswa->get_create_mahasiswa($nrp, $nama, $email);
+    
             return redirect('/dashboard')->with('success', 'Berhasil menambahkan data');
         } catch (\Exception $e) {
             return redirect('/add-mahasiswa')->with('error', 'Maaf NRP Sudah Digunakan');
@@ -62,9 +63,13 @@ class DashboardController extends Controller
 
     public function edit ($nrp) {
         $data['title'] = 'Edit Data Mahasiswa';
-        $mhs = Mahasiswa::where('nrp', $nrp)->first();
+    
+        $mahasiswa = new Mahasiswa();
+        $mhs = $mahasiswa->get_mahasiswa_by_nrp($nrp);
+
         $data['nama'] = $mhs->nama;
         $data['email'] = $mhs->email;
+
         return  
             view('template/header', $data) .
             view('edit-mahasiswa', $data, compact('nrp')) .
@@ -77,9 +82,11 @@ class DashboardController extends Controller
             'nama' => $request->nama,
             'email' => $request->email
         ];
-
+    
         try {
-            Mahasiswa::where('nrp', $nrp)->update($data);
+            $mahasiswa = new Mahasiswa();
+            $mahasiswa->get_update_mahasiswa($nrp, $data['nama'], $data['email']);
+    
             return redirect('/dashboard')->with('success', 'Berhasil mengedit data');
         } catch (\Exception $e) {
             return redirect('/dashboard')->with('error', 'Gagal mengedit data');
@@ -88,7 +95,9 @@ class DashboardController extends Controller
 
     public function hapusproses($nrp) {
         try {
-            Mahasiswa::where('nrp', $nrp)->delete();
+            $mahasiswa = new Mahasiswa();
+            $mahasiswa->get_delete_mahasiswa($nrp);
+    
             return back()->with('success', 'Berhasil menghapus data');
         } catch (\Exception $e) {
             return back()->with('error', 'Gagal menghapus data');

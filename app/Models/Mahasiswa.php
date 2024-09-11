@@ -28,11 +28,16 @@ class Mahasiswa extends Model
             ");      
     }
 
-    public function get_edit_mahasiswa($nrp, $nama, $email)
+    public function get_update_mahasiswa($nrp, $nama, $email)
     {
         return DB::update("
             UPDATE mahasiswa SET nama = '$nama', email = '$email' WHERE nrp = '$nrp'
         ");      
+    }
+
+    public function get_mahasiswa_by_nrp($nrp)
+    {
+        return DB::selectOne("SELECT * FROM mahasiswa WHERE nrp = ?", [$nrp]);
     }
 
     public function get_delete_mahasiswa($nrp)

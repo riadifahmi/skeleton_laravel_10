@@ -15,19 +15,13 @@ class User extends Authenticatable
 
     protected $table = 'users';
     protected $primaryKey = 'id_user';
-    public function get_create_user($id_user, $username, $password, $updated_at, $created_at)
+    public function get_create_user($username, $password)
     {
         return DB::insert("
-            INSERT INTO users (id_user, username, password, updated_at, created_at) VALUES ('$id_user', '$username', '$password', '$updated_at', '$created_at') 
+            INSERT INTO users (username, password) VALUES ('$username', '$password') 
             ");      
     }
 
-    // public function get_create_user($id_user, $username, $password, $email, $updated_at, $created_at)
-    // {
-    //     return DB::insert("
-    //         INSERT INTO users (id_user, username, password, email, updated_at, created_at) VALUES ('$id_user', '$username', '$password', '$email', $updated_at', '$created_at') 
-    //         ");      
-    // }
 
     /**
      * The attributes that are mass assignable.
@@ -37,8 +31,6 @@ class User extends Authenticatable
     protected $fillable = [
         'username',
         'password',
-        'updated_at',
-        'created_at',
     ];
 
     /**

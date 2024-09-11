@@ -1,6 +1,6 @@
 @include('template/header')
 
-<body style="height: 50rem">
+<body style="height: 52rem">
     
 <div class="container mt-5">
     <div class="row">
@@ -42,12 +42,12 @@
                 @endforeach      --}}
             </tbody>
         </table>
-        {{-- <form action="{{url('logout')}}" method="post">
+        <form action="{{route('actionlogout')}}" method="post">
         @csrf
         <div class="col-md-12 mt-3">
             <button class="btn btn-md btn-warning float-end">Logout</button>
         </div>
-        </form> --}}
+        </form>
     </div>
 </div>
 

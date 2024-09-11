@@ -18,7 +18,7 @@
 
                     <div class="card-body">
 
-                        <form action="{{url('register')}}" method="post">
+                        <form action="{{route('actionregister')}}" method="post">
                             {{csrf_field()}}
                             <div class="form-group">
                                 <label for="username">Username</label>
