@@ -22,6 +22,19 @@ class User extends Authenticatable
             ");      
     }
 
+    public static function checkUserLogin($username, $password)
+    {
+        $hashedPassword = hash('sha256', md5($password));
+
+        $user = DB::selectOne("
+            SELECT * FROM users WHERE username = ? AND password = ?
+        ", [$username, $hashedPassword]);
+
+        return $user;
+    }
+
+    
+
 
     /**
      * The attributes that are mass assignable.

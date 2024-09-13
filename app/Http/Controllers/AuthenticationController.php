@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class AuthenticationController extends Controller
 
@@ -30,16 +31,17 @@ class AuthenticationController extends Controller
             'username' => ['required'],
             'password' => ['required'],
         ]);
-
+    
         $credentials = $request->only('username', 'password');
-
-        // dd($credentials);
-        if (Auth::attempt($credentials)) {
+    
+        $user = User::checkUserLogin($credentials['username'], $credentials['password']);
+    
+        if ($user) {
+            Auth::loginUsingId($user->id_user);
             $request->session()->regenerate();
-
             return redirect('/dashboard');
         }
-
+    
         return back()->with('loginError', 'Login Failed!');
     }
     
