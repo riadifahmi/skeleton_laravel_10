@@ -16,6 +16,14 @@
     </div>
 @endif
 
+@if (session()->has('verified'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{session()->get('verified')}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+@endif
+
 <body class="position-absolute top-50 start-50 translate-middle">
     <div class="container"></div>
         <div class="row justify-content-center">
@@ -28,9 +36,13 @@
 
                         <form action="{{route('actionlogin')}}" method="post" enctype="multipart/form-data">
                         @csrf
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label for="username">Username</label>
                                 <input type="text" class="form-control mt-2" name="username" placeholder="Username" required>
+                            </div> --}}
+                            <div class="form-group">
+                                <label for="username">Email</label>
+                                <input type="email" class="form-control mt-2" name="email" placeholder="Email" required>
                             </div>
                             <div class="form-group">
                                 <label for="password" class="mt-3">Password</label>

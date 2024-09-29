@@ -24,26 +24,32 @@ class AuthenticationController extends Controller
             view('login', $data) .
             view('template/footer');
     }
-
+    
     public function actionlogin(Request $request)
     {
         $request->validate([
-            'username' => ['required'],
+            'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
     
-        $credentials = $request->only('username', 'password');
-    
-        $user = User::checkUserLogin($credentials['username'], $credentials['password']);
+        $user = User::where('email', $request->email)->first();
     
         if ($user) {
-            Auth::loginUsingId($user->id_user);
-            $request->session()->regenerate();
-            return redirect('/dashboard');
+            // Hash ulang password yang dimasukkan user menggunakan MD5 + SHA-256
+            $hashedInputPassword = md5($request->password); // Hash MD5
+            $hashedInputPassword = hash('sha256', $hashedInputPassword); // Hash SHA-256
+    
+            if (Hash::check($hashedInputPassword, $user->password)) {
+                Auth::loginUsingId($user->id_user);
+                $request->session()->regenerate();
+                return redirect('/dashboard');
+            }
         }
     
         return back()->with('loginError', 'Login Failed!');
     }
+    
+    
     
 
     public function actionlogout()

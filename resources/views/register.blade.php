@@ -11,7 +11,7 @@
 <body class="position-absolute top-50 start-50 translate-middle">
     <div class="container"></div>
         <div class="row justify-content-center">
-                <div class="card border col-sm-6 col-md-4 col-md-offset-4" style="width: 25rem; height: 23rem;">
+                <div class="card border col-sm-6 col-md-4 col-md-offset-4" style="width: 25rem; height: 26rem;">
                     <div>
                         <h2 class="text-center my-4"><b>Register</b></h2>
                     </div>
@@ -23,6 +23,10 @@
                             <div class="form-group">
                                 <label for="username">Username</label>
                                 <input type="text" class="form-control mt-2" name="username" placeholder="Username">
+                            </div>
+                            <div class="form-group">
+                                <label for="email"  class="mt-3">Email</label>
+                                <input type="email" class="form-control mt-2" name="email" placeholder="Email">
                             </div>
                             <div class="form-group">
                                 <label for="password" class="mt-3">Password</label>
